@@ -32,7 +32,7 @@ class CasesGroup{
     /**
     * usage  : CasesGroup.getInstance(..).onCases(..).onCases(..)...otherwise(..);
     */
-    CasesGroup onCases(Probability p, GenFunction genFunc) {    	
+    CasesGroup onCases(Probability p, GenAction genFunc) {    	
     	if (!p.isProperValue()) {
         	MyMsg.note("## Percent should be larger than 0 and smaller than 100");
             return this;
@@ -52,7 +52,7 @@ class CasesGroup{
         return this;
     }
     
-	void otherwise(Probability p, GenFunction genFunc) {
+	void otherwise(Probability p, GenAction genFunc) {
 		if (currentRange.slide(p.percent()) == FAILED) {	
         	MyMsg.debuggingLog("## min should be smaller than max: " + currentRange + ", givenP=" + p.percent());
         	return;
