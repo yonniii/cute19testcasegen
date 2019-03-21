@@ -15,7 +15,7 @@ public class TestcaseGenerator {
      * 	  const -> intconst | boolconst
      * 	  boolconst -> #T | #F
      * 	  list -> 	'(' binop expr expr ')' | '(' 'define' expr expr ')' | '(' 'eq?' expr expr ')'
-     * 				| '(' “cond” expr expr expr ')'
+     * 				| '(' cond expr expr expr ')'
      * 				| '(' 'not' expr ')' |  (atom?' expr ')' | '(' 'null?' expr ')'
      * 				| '(' 'lambda' expr list ')'
      * 				| '(' car list ')'  | '(' cdr list ')'
@@ -24,7 +24,7 @@ public class TestcaseGenerator {
      * 				| '(' expr')'
      * 				| '(' expr list ')'
      * 
-     * 	todo: genIDList 를 lambda에 적용하거나, genBoolExpr, genIntExpr 등으로 해서 타입을 나눠보기? 가능?
+     * 	todo: genIDList, genBoolExpr, genIntExpr �и�? type �����ؼ�?
     */
     
 	static final FileWriter CONSOLE_OUTPUT = (FileWriter) null;
@@ -58,10 +58,27 @@ public class TestcaseGenerator {
     	blank();
 	}
 	
+	private void genIntExpr() {
+		CasesGroup cases = CasesGroup.getInstance();
+    	cases.onCases(Probability.Percent40, ()-> genId())
+                .onCases(Probability.Percent40, ()-> genIntConst())
+                .otherwise(Probability.Percent20,()->genList());
+    	blank();
+	}
+	
+	private void genBoolExpr() {
+		CasesGroup cases = CasesGroup.getInstance();
+    	cases.onCases(Probability.Percent40, ()-> genId())
+                .onCases(Probability.Percent40, ()-> genBoolConst())
+                .otherwise(Probability.Percent20,()->genList());
+    	blank();
+	}
+	
 	int listDepth = 10;
 	private void genList() {
 		if (listDepth <= 0) {
 			genToken("()");
+			listDepth = 10;
 			return;
 		}
 			
@@ -76,31 +93,62 @@ public class TestcaseGenerator {
     	genToken(")");
     	blank();
 	}
+	
+	int listItemNumber = 5; // for the formal argument list for lambda's and define's
+	
+	private void genIdListTail() {
+		if (listItemNumber < 0)  {
+			listItemNumber = 5;
+			return;
+		}
+		listItemNumber--;
+		blank(); genId();
+		CasesGroup cases = CasesGroup.getInstance();
+		cases.onCases(Probability.Percent30, ()->{blank(); genIdListTail();})
+			.otherwiseDoNothing(Probability.Percent70);
+	}
+	
+	private void genIdList() {
+
+		genToken("(");
+		genId(); genIdListTail();
+		genToken(")");
+    	blank();
+	}
+	
+
+	private void genFormalArgs() {
+		CasesGroup cases = CasesGroup.getInstance();
+        cases.onCases(Probability.Percent20, () -> genId() )
+                .otherwise(Probability.Percent80,()-> genIdList());
+        blank(); 		
+	}
 
 	private void genBinExpr() {
         CasesGroup cases = CasesGroup.getInstance();
-        cases.onCases(Probability.Percent20, () -> {genToken("+"); genExpr(); genExpr();})
-                .onCases(Probability.Percent20, () -> {genToken("-"); genExpr(); genExpr();})
-                .onCases(Probability.Percent20, () -> {genToken("*"); genExpr(); genExpr();})
-                .onCases(Probability.Percent10, () -> {genToken("/"); genExpr(); genExpr();})
-                .onCases(Probability.Percent10, () -> {genToken(">"); genExpr(); genExpr();})
-                .onCases(Probability.Percent10, () -> {genToken("<"); genExpr(); genExpr();})
+        cases.onCases(Probability.Percent20, () -> {genToken("+"); genIntExpr(); genIntExpr();})
+                .onCases(Probability.Percent20, () -> {genToken("-"); genIntExpr(); genIntExpr();})
+                .onCases(Probability.Percent20, () -> {genToken("*"); genIntExpr(); genIntExpr();})
+                .onCases(Probability.Percent10, () -> {genToken("/"); genIntExpr(); genIntExpr();})
+                .onCases(Probability.Percent10, () -> {genToken(">"); genIntExpr(); genIntExpr();})
+                .onCases(Probability.Percent10, () -> {genToken("<"); genIntExpr(); genIntExpr();})
                 .otherwise(Probability.Percent10,()-> {genToken("="); genExpr(); genExpr();}); // 20%
         blank();
 	}
 
 	private void genKeyword() {
 		CasesGroup cases = CasesGroup.getInstance();
-        cases.onCases(Probability.Percent15, () -> { genToken("define"); genId(); genExpr();} )
-                .onCases(Probability.Percent15, () -> {genToken("cond"); genExpr(); genExpr(); genExpr();})
+        cases.onCases(Probability.Percent15, () -> { genToken("define"); genFormalArgs(); genExpr();} )
+                .onCases(Probability.Percent15, () -> {genToken("cond"); genBoolExpr(); genExpr(); genExpr();})
                 .onCases(Probability.Percent10, () -> {genToken("not");  genExpr();})
                 .onCases(Probability.Percent10, () -> {genToken("quote");genList();})
-                .onCases(Probability.Percent10, () -> {genToken("lambda"); genExpr(); genList();})
+                .onCases(Probability.Percent10, () -> {genToken("lambda"); genFormalArgs(); genList();})
                 .onCases(Probability.Percent15, () -> {genToken("car");	genList();})
                 .onCases(Probability.Percent15, () -> {genToken("cdr"); genList();})
                 .otherwise(Probability.Percent10,()-> {genToken("cons"); genExpr(); genList();});
         blank(); 
 	}
+
 
 	private void genPredicates() {
 		CasesGroup cases = CasesGroup.getInstance();
