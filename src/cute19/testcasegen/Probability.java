@@ -17,7 +17,8 @@ enum Probability {
     Percent60(60),Percent65(65),
     Percent70(70),Percent75(75),
     Percent80(80),Percent85(85),
-    Percent90(90),Percent95(95), Percent0(0);
+    Percent90(90),Percent95(95),
+    Percent0(0),Percent100(100);
 	
     private int percent;
     
