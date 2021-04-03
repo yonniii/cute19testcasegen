@@ -39,13 +39,12 @@ public class CuteInterpreter {
         return s.nextLine();
     }
 
-    public static void callInterpreter(String filename) throws IOException {
+    public static void callInterpreter(List<String> codes) throws IOException {
         CuteParser cuteParser;
         CuteInterpreter interpreter;
         Node parseTree;
         Node resultNode;
         NodePrinter nodePrinter;
-        List<String> codes = readFile(filename);
         for (String line: codes) {
             cuteParser = new CuteParser(line);
             interpreter = new CuteInterpreter();

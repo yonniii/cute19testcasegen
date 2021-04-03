@@ -1,5 +1,7 @@
 package cute19.prover;
 
+import cute19.interpreter.interpreter.CuteInterpreter;
+
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -32,13 +34,7 @@ public class ProveMain {
         programToRun = target.getPrecondition();
         programToRun.add(genedCode);
 
-        for (String line:programToRun
-             ) {
-            System.out.println(
-                    line
-            );
-        }
-
+        CuteInterpreter.callInterpreter(programToRun);
 
         return null;
     }
