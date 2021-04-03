@@ -53,9 +53,12 @@ public class NodePrinter {
         }
     }
 
-    public void prettyPrint() {
+    public String prettyPrint(boolean isConneted) {
         printNode(root);
-        System.out.println("... "+sb);
+        if (!isConneted){
+            System.out.println("... "+sb);
+        }
+        return sb.toString();
 //        try (FileWriter fw = new FileWriter(OUTPUT_FILENAME);
 //             PrintWriter pw = new PrintWriter(fw)) {
 //            pw.write(sb.toString());

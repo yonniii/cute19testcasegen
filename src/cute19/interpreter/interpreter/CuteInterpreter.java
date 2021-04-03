@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Scanner;
@@ -27,7 +28,7 @@ public class CuteInterpreter {
             parseTree = cuteParser.parseExpr();
             resultNode = interpreter.runExpr(parseTree);
             nodePrinter = new NodePrinter(resultNode);
-            nodePrinter.prettyPrint();
+            nodePrinter.prettyPrint(false);
         }
 
     }
@@ -39,7 +40,8 @@ public class CuteInterpreter {
         return s.nextLine();
     }
 
-    public static void callInterpreter(List<String> codes) throws IOException {
+    public static List<String> callInterpreter(List<String> codes) throws IOException {
+        List<String> results = new ArrayList<>();
         CuteParser cuteParser;
         CuteInterpreter interpreter;
         Node parseTree;
@@ -51,8 +53,10 @@ public class CuteInterpreter {
             parseTree = cuteParser.parseExpr();
             resultNode = interpreter.runExpr(parseTree);
             nodePrinter = new NodePrinter(resultNode);
-            nodePrinter.prettyPrint();
+            results.add(nodePrinter.prettyPrint(true));
+//            nodePrinter.prettyPrint();
         }
+        return results;
     }
 
     private static List<String> readFile(String filename) throws IOException {

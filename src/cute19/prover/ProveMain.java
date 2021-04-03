@@ -34,7 +34,10 @@ public class ProveMain {
         programToRun = target.getPrecondition();
         programToRun.add(genedCode);
 
-        CuteInterpreter.callInterpreter(programToRun);
+        List<String> results = CuteInterpreter.callInterpreter(programToRun);
+        for (int i = 0; i < results.size(); i++) {
+            System.out.println(results.get(i));
+        }
 
         return null;
     }
