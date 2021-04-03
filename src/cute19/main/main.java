@@ -10,7 +10,7 @@ class main{
         String genedFilename = "out";
         TestMain.main(new String[]{genedFilename});
         try {
-            CuteInterpreter.main(new String[]{genedFilename});
+            CuteInterpreter.callInterpreter(genedFilename);
         } catch (IOException e) {
             e.printStackTrace();
         }

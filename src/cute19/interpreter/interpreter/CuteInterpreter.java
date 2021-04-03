@@ -20,9 +20,9 @@ public class CuteInterpreter {
         Node parseTree;
         Node resultNode;
         NodePrinter nodePrinter;
-        List<String> codes = readFile(args[0]);
-        for (String line: codes) {
-            cuteParser = new CuteParser(line);
+
+        while (true) {
+            cuteParser = new CuteParser(scanner());
             interpreter = new CuteInterpreter();
             parseTree = cuteParser.parseExpr();
             resultNode = interpreter.runExpr(parseTree);
@@ -37,6 +37,23 @@ public class CuteInterpreter {
     private static String scanner() {
         System.out.print("> ");
         return s.nextLine();
+    }
+
+    public static void callInterpreter(String filename) throws IOException {
+        CuteParser cuteParser;
+        CuteInterpreter interpreter;
+        Node parseTree;
+        Node resultNode;
+        NodePrinter nodePrinter;
+        List<String> codes = readFile(filename);
+        for (String line: codes) {
+            cuteParser = new CuteParser(line);
+            interpreter = new CuteInterpreter();
+            parseTree = cuteParser.parseExpr();
+            resultNode = interpreter.runExpr(parseTree);
+            nodePrinter = new NodePrinter(resultNode);
+            nodePrinter.prettyPrint();
+        }
     }
 
     private static List<String> readFile(String filename) throws IOException {
