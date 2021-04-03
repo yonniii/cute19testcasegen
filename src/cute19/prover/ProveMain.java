@@ -12,10 +12,15 @@ import java.util.List;
 public class ProveMain {
 
     private static Program target = new Program();
-
+    private static int eachInputSize = 3;
+    private static int totalInputSize = 4;
     public static void main(String[] args){
 
-        target.setInOut(new Object[] {1,2,3}, new Object[] {2,3,4});
+
+        Object[][] input = {{1,1,1},{2,2,2},{3,3,3},{4,4,4}};
+        Object[][] output = {{2},{3},{4},{5}};
+
+        target.setInOut(input, output, eachInputSize,1);
         target.setProgram("x + 1");
         try {
             checker(args[0]);
@@ -45,19 +50,23 @@ public class ProveMain {
 
 class Program{
 
-    Object[] in;
-    Object[] out;
+    Object[][] in;
+    Object[][] out;
     String program;
+    int eachInputSize;
+    int eachOutputSize;
 
-    public boolean setInOut(Object[] in, Object[] out){
+    public boolean setInOut(Object[][] in, Object[][] out, int eachInputSize, int eachOuputSize){
         if(in.length != out.length){
             return false;
         }
-        this.in = new Object[in.length];
-        this.out = new Object[out.length];
+        this.eachInputSize = eachInputSize;
+        this.eachOutputSize = eachOuputSize;
+        this.in = new Object[in.length][eachInputSize];
+        this.out = new Object[out.length][eachOuputSize];
         for (int i = 0; i < in.length; i++) {
-            this.in[i] = in[i];
-            this.out[i] = out[i];
+            System.arraycopy(in[i],0, this.in[i],0,eachInputSize);
+            System.arraycopy(out[i],0, this.out[i],0,eachOuputSize);
         }
         return true;
     }
@@ -70,7 +79,7 @@ class Program{
         return true;
     }
 
-    public List<String> getPrecondition(){
+    public List<String> getPrecondition(int ioCount){
         String prame = "( %s %s %s )";
         List<String> codes = new ArrayList<>();
 
@@ -78,8 +87,8 @@ class Program{
             return null;
         }
 
-        for (int i = 0; i < in.length; i++) {
-            codes.add(String.format(prame, "define", (char)('a'+i), in[i]));
+        for (int i = 0; i < this.eachInputSize; i++) {
+            codes.add(String.format(prame, "define", (char)('a'+i), in[ioCount][i]));
         }
         return codes;
     }
