@@ -34,7 +34,7 @@ public class TestMain {
 		}
 	}
 
-	public static void main(String args[]){
+	public static void main(String[] args){
 		int numOfTCases = 10;
     	
     	if (args.length == 0)		// to console

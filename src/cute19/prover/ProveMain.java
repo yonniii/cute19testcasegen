@@ -13,7 +13,7 @@ public class ProveMain {
 
     private static Program target = new Program();
 
-    public static void main(String args[]){
+    public static void main(String[] args){
 
         target.setInOut(new Object[] {1,2,3}, new Object[] {2,3,4});
         target.setProgram("x + 1");
