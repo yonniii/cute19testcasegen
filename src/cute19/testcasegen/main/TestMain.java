@@ -2,6 +2,7 @@ package cute19.testcasegen.main;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.StringBufferInputStream;
 
 import cute19.testcasegen.TestcaseGenerator;
 import cute19.util.MyMsg;
@@ -34,8 +35,16 @@ public class TestMain {
 		}
 	}
 
+	public static String testCaseGeneration2String(int numOfTCases){
+		StringBuilder sb = new StringBuilder();
+		for (int  i = 0; i< numOfTCases ; i++) {
+			new TestcaseGenerator(sb).generate();
+		}
+		return sb.toString();
+	}
+
 	public static void main(String[] args){
-		int numOfTCases = 10;
+		int numOfTCases = 1;
     	
     	if (args.length == 0)		// to console
     		testCaseGeneration2Console(numOfTCases);

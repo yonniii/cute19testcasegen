@@ -3,9 +3,6 @@ package cute19.prover;
 import cute19.interpreter.interpreter.CuteInterpreter;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,11 +27,24 @@ public class ProveMain {
 
     }
 
-    private static String checker(String filename) throws IOException {
-        List<String> lines = Files.readAllLines(Paths.get(filename),
-                StandardCharsets.UTF_8);
+    public static String prove(String program){
+        Object[][] input = {{1,1,1},{2,2,2},{3,3,3},{4,4,4}};
+        Object[][] output = {{2},{3},{4},{5}};
+        String checked = null;
+
+        target.setInOut(input, output, eachInputSize,1);
+        target.setProgram("x + 1");
+        try {
+            checked = checker(program);
+        } catch (IOException e) {
+//            e.printStackTrace();
+        }
+        return checked;
+    }
+
+    private static String checker(String program) throws IOException {
         List<String> programToRun;
-        String genedCode = lines.get(0).trim();
+        String genedCode = program.trim();
 
         for (int i = 0; i < totalInputSize; i++) {
             programToRun = target.getPrecondition(i);

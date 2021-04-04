@@ -24,11 +24,13 @@ public class TestcaseGenerator {
      * 				| '(' expr')'
      * 				| '(' expr list ')'
      * 
-     * 	todo: genIDList, genBoolExpr, genIntExpr ºÐ¸®? type »ý°¢ÇØ¼­?
+     * 	todo: genIDList, genBoolExpr, genIntExpr ï¿½Ð¸ï¿½? type ï¿½ï¿½ï¿½ï¿½ï¿½Ø¼ï¿½?
     */
     
-	static final FileWriter CONSOLE_OUTPUT = (FileWriter) null;
-	FileWriter output = CONSOLE_OUTPUT;
+	static final FileWriter FILE_OUTPUT = (FileWriter) null;
+	FileWriter output = FILE_OUTPUT;
+	static final StringBuilder SB_OUTPUT = (StringBuilder) null;
+	StringBuilder sb_output = SB_OUTPUT;
 
 	BasicsGenerator basicsGen 	= new BasicsGenerator(this);
 	ExprGenerator 	exprGen 	= new ExprGenerator(this);
@@ -39,6 +41,8 @@ public class TestcaseGenerator {
 	public TestcaseGenerator(FileWriter filewriter) {
 		this.output = filewriter;
 	}
+
+	public TestcaseGenerator(StringBuilder sb) { this.sb_output = sb;}
 	
 	public TestcaseGenerator() { }	// console output will shows test cases
 	

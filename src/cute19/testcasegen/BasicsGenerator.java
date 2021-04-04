@@ -19,15 +19,18 @@ public class BasicsGenerator {
     }
     
     private void print(String s) {
-    	if (gen.output == TestcaseGenerator.CONSOLE_OUTPUT) {	// to console
-    		System.out.print(s);
-    	}
-		else {							// to a file
+    	if (gen.output != TestcaseGenerator.FILE_OUTPUT) {	// to a file
 			try {
 				gen.output.write(s);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+    	}
+    	else if(gen.sb_output != TestcaseGenerator.SB_OUTPUT){ // to a String data
+    		gen.sb_output.append(s);
+		}
+		else {							// to console
+				System.out.print(s);
 		}
     }
 }
