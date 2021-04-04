@@ -36,15 +36,45 @@ public class ProveMain {
         List<String> programToRun;
         String genedCode = lines.get(0).trim();
 
-        programToRun = target.getPrecondition();
-        programToRun.add(genedCode);
+        for (int i = 0; i < totalInputSize; i++) {
+            programToRun = target.getPrecondition(i);
+            if(programToRun == null){
+                continue;
+            }
+            programToRun.add(genedCode);
+            List<String> results;
+            try{
+                results = CuteInterpreter.callInterpreter(programToRun);
+            } catch (Exception e){
+//                e.printStackTrace();
+                continue;
+            }
+            String lastResult;
+            if(results.size()>0){
+                lastResult = results.get(results.size()-1).trim();
+            } else {
+                continue;
+            }
 
-        List<String> results = CuteInterpreter.callInterpreter(programToRun);
-        for (int i = 0; i < results.size(); i++) {
-            System.out.println(results.get(i));
+            if(isReasonable(lastResult, (target.out[i][0]).toString())){
+//                System.out.println(genedCode);
+                if(i == totalInputSize-1){
+                    System.out.println(lastResult + "\t" + (target.out[i][0]).toString());
+                    return genedCode;
+                }
+            } else {
+                return null;
+            }
+//            for (String result: results) {
+//                System.out.println(result);
+//            }
         }
 
         return null;
+    }
+
+    private static boolean isReasonable(String gened, String target) {
+        return gened.equals(target);
     }
 }
 
