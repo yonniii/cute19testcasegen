@@ -79,7 +79,7 @@ public class CuteInterpreter {
             }else if (Table.lookupTable(rootExpr.toString()) != null) {
                 return Table.lookupTable(rootExpr.toString());
             } else {
-                return rootExpr;
+                return null;
             }
         } else if (rootExpr instanceof IntNode) {
             return rootExpr;
