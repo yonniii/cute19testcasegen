@@ -11,6 +11,7 @@ class main{
 //        String genedFilename = "out";
         String genedProgram;
         String reasonableProgram = null;
+        long start = System.nanoTime();
         while(true){
             genedProgram = TestMain.testCaseGeneration2String(1);
             try{
@@ -24,5 +25,7 @@ class main{
                 break;
             }
         }
+        long elapsedTime = System.nanoTime() - start;
+        System.out.println("time to solve : " + (elapsedTime/1000000000.0) + "sec" );
     }
 }
