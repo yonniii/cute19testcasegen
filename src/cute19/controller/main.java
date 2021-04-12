@@ -1,4 +1,4 @@
-package cute19.main;
+package cute19.controller;
 
 import cute19.testcasegen.main.TestMain;
 import cute19.interpreter.interpreter.CuteInterpreter;
