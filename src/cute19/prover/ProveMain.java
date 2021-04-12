@@ -3,6 +3,7 @@ package cute19.prover;
 import cute19.interpreter.interpreter.CuteInterpreter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ProveMain {
@@ -69,7 +70,7 @@ public class ProveMain {
             }
 
             // If the execution result of the generated program is the same as the output specification, the generated program is returned.
-            if(isReasonable(lastResult, (target.out[i][0]).toString())){
+            if(isReasonable(lastResult, (target.out.get(i).get(0)).toString())){
 //                System.out.println(genedCode);
                 // If all cases pass, return the generated program
                 if(i == totalInputSize-1){
@@ -95,8 +96,8 @@ public class ProveMain {
 
 class Program{
 
-    Object[][] in;
-    Object[][] out;
+    List<List<Object>> in;
+    List<List<Object>> out;
     String program;
     int eachInputSize;
     int eachOutputSize;
@@ -108,11 +109,11 @@ class Program{
         }
         this.eachInputSize = eachInputSize;
         this.eachOutputSize = eachOuputSize;
-        this.in = new Object[in.length][eachInputSize];
-        this.out = new Object[out.length][eachOuputSize];
+        this.in = new ArrayList<>();
+        this.out = new ArrayList<>();
         for (int i = 0; i < in.length; i++) {
-            System.arraycopy(in[i],0, this.in[i],0,eachInputSize);
-            System.arraycopy(out[i],0, this.out[i],0,eachOuputSize);
+            this.in.add(Arrays.asList(in[i]));
+            this.out.add(Arrays.asList(out[i]));
         }
         return true;
     }
@@ -135,7 +136,7 @@ class Program{
         }
 
         for (int i = 0; i < this.eachInputSize; i++) {
-            codes.add(String.format(prame, "define", (char)('a'+i), in[ioCount][i]));
+            codes.add(String.format(prame, "define", (char)('a'+i), in.get(ioCount).get(i)));
         }
         return codes;
     }
