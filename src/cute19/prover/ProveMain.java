@@ -2,7 +2,6 @@ package cute19.prover;
 
 import cute19.interpreter.interpreter.CuteInterpreter;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,8 +10,9 @@ public class ProveMain {
     private static Program target = new Program();
     private static int eachInputSize = 3;
     private static int totalInputSize = 4;
-    public static void main(String[] args){
 
+
+    public static void main(String[] args){
 
         Object[][] input = {{1,1,1},{2,2,2},{3,3,3},{4,4,4}};
         Object[][] output = {{2},{3},{4},{5}};
