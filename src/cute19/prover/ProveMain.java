@@ -8,8 +8,8 @@ import java.util.List;
 public class ProveMain {
 
     private static Program target = new Program();
-    private static int eachInputSize = 3;
-    private static int totalInputSize = 4;
+    private static int eachInputSize = 3; // Number of preconditions for one input case
+    private static int totalInputSize = 4; //Number of input cases in total specification
 
 
     public static void main(String[] args){
@@ -63,6 +63,7 @@ public class ProveMain {
             // check whether exec result is valid
             if(results.size()>0){
                 lastResult = results.get(results.size()-1).trim();
+                // The last element in the execution result list is the result of the generated program.
             } else {
                 continue;
             }
@@ -70,6 +71,7 @@ public class ProveMain {
             // If the execution result of the generated program is the same as the output specification, the generated program is returned.
             if(isReasonable(lastResult, (target.out[i][0]).toString())){
 //                System.out.println(genedCode);
+                // If all cases pass, return the generated program
                 if(i == totalInputSize-1){
                     System.out.println(lastResult + "\t" + (target.out[i][0]).toString());
                     return genedCode;
@@ -85,7 +87,7 @@ public class ProveMain {
         return null;
     }
 
-//    Checks whether the result of executing the generated program is the same as the output specification
+    //    Checks whether the result of executing the generated program is the same as the output specification
     private static boolean isReasonable(String gened, String target) {
         return gened.equals(target);
     }
@@ -99,7 +101,7 @@ class Program{
     int eachInputSize;
     int eachOutputSize;
 
-//    set input and output to field
+    //    set input and output to field
     public boolean setInOut(Object[][] in, Object[][] out, int eachInputSize, int eachOuputSize){
         if(in.length != out.length){
             return false;
@@ -123,7 +125,7 @@ class Program{
         return true;
     }
 
-//    Before run generated program, define variants for input spec.
+    //    Before run generated program, define variants for input spec.
     public List<String> getPrecondition(int ioCount){
         String prame = "( %s %s %s )";
         List<String> codes = new ArrayList<>();
