@@ -21,7 +21,7 @@ public class ProveMain {
         target.setProgram("x + 1");
         try {
             checker(args[0]);
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -36,13 +36,13 @@ public class ProveMain {
         target.setProgram("x + 1");
         try {
             checked = checker(program);
-        } catch (IOException e) {
+        } catch (Exception e) {
 //            e.printStackTrace();
         }
         return checked;
     }
 
-    private static String checker(String program) throws IOException {
+    private static String checker(String program)  {
         List<String> programToRun;
         String genedCode = program.trim();
 
